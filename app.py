@@ -21,7 +21,8 @@ def handle_post():
     e2 = sentence_transformer.encode([student_answer])
 
     # Make a prediction using the loaded model
-
+    prediction = siamese_model.predict([e1, e2]).tolist()
+ 
 
     # Prepare the response
     response = {
