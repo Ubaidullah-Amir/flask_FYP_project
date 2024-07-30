@@ -1,12 +1,12 @@
 from flask import Flask, request, jsonify
-from tensorflow.keras.models import load_model
-from sentence_transformers import SentenceTransformer
+# from tensorflow.keras.models import load_model
+# from sentence_transformers import SentenceTransformer
 
 app = Flask(__name__)
 
 # Load models and encoders once at startup
-siamese_model = load_model('model/siamese_model.h5')
-sentence_transformer = SentenceTransformer('all-MiniLM-L6-v2')
+# siamese_model = load_model('model/siamese_model.h5')
+# sentence_transformer = SentenceTransformer('all-MiniLM-L6-v2')
 
 @app.route('/model_endpoint', methods=['POST'])
 def handle_post():
@@ -17,11 +17,12 @@ def handle_post():
     student_answer = data.get('student_answer')
 
     # Encode the sentences
-    e1 = sentence_transformer.encode([ideal_answer])
-    e2 = sentence_transformer.encode([student_answer])
+    # e1 = sentence_transformer.encode([ideal_answer])
+    # e2 = sentence_transformer.encode([student_answer])
 
     # Make a prediction using the loaded model
-    prediction = siamese_model.predict([e1, e2]).tolist()
+    # prediction = siamese_model.predict([e1, e2]).tolist()
+    prediction=3
 
     # Prepare the response
     response = {
