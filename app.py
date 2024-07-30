@@ -2,36 +2,28 @@ from flask import Flask, request, jsonify
 from tensorflow.keras.models import load_model
 from sentence_transformers import SentenceTransformer
 
-
-
-
 app = Flask(__name__)
+
+# Load models and encoders once at startup
+siamese_model = load_model('model/siamese_model.h5')
+sentence_transformer = SentenceTransformer('all-MiniLM-L6-v2')
 
 @app.route('/model_endpoint', methods=['POST'])
 def handle_post():
     # Get the data sent in the POST request
     data = request.get_json()
 
-    
-    sentence_transformers = SentenceTransformer('all-MiniLM-L6-v2')
+    ideal_answer = data.get('ideal_answer')
+    student_answer = data.get('student_answer')
 
+    # Encode the sentences
+    e1 = sentence_transformer.encode([ideal_answer])
+    e2 = sentence_transformer.encode([student_answer])
 
-    ideal_answer = data.ideal_answer
-    student_answer = data.student_answer
+    # Make a prediction using the loaded model
+    prediction = siamese_model.predict([e1, e2]).tolist()
 
-    e1 = sentence_transformers.encode([ideal_answer])
-    e2 = sentence_transformers.encode([student_answer])
-
-    siamese_model = load_model('model/siamese_model.h5')
-
-
-
-
-    prediction = siamese_model.predict([e1, e2])
-
-    
-
-    # Process the data (this is where your logic would go)
+    # Prepare the response
     response = {
         'prediction': prediction
     }
