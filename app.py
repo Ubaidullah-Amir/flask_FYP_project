@@ -5,7 +5,7 @@ from sentence_transformers import SentenceTransformer
 app = Flask(__name__)
 
 # Load models and encoders once at startup
-siamese_model = load_model('model/siamese_model.h5')
+siamese_model =load_model('new_saved_model/siamese_model_completemodel')
 sentence_transformer = SentenceTransformer('all-MiniLM-L6-v2')
 
 @app.route('/model_endpoint', methods=['POST'])
